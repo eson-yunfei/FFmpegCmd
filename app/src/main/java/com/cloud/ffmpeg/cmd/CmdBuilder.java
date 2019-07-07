@@ -33,7 +33,7 @@ public class CmdBuilder {
      * @return  cmd
      */
     public CmdBuilder detachAudio(String outFile) {
-        cmdList.add("-acodec"); //指定音频编码
+        cmdList.add(Encoder.AUDIO_ENCODER); //指定音频编码
         cmdList.add("copy");    //只做 copy ,不做编码
         cmdList.add("-vn");     //v 代表视频，n 代表no ,意思是无视频
         cmdList.add(outFile);   //输出文件
@@ -46,12 +46,24 @@ public class CmdBuilder {
      * @return
      */
     public CmdBuilder detachVideo(String outFile) {
-        cmdList.add("-vcodec"); //指定视频编码
+        cmdList.add(Encoder.VIDEO_ENCODER); //指定视频编码
         cmdList.add("copy");    //只做 copy ,不做编码
         cmdList.add("-an");     //a 代表音频，n 代表no ,意思是无音频
         cmdList.add(outFile);   //输出文件
         return this;
     }
+
+    public CmdBuilder composed(String srcVideo,String srcAudio,String outVideo) {
+        setSrcFile(srcVideo);
+        setSrcFile(srcAudio);
+        cmdList.add(Encoder.VIDEO_ENCODER);
+        cmdList.add("copy");
+        cmdList.add(Encoder.AUDIO_ENCODER);
+        cmdList.add("copy");
+        cmdList.add(outVideo);
+        return this;
+    }
+
 
     public Cmd build() {
         String[] array = new String[cmdList.size()];
@@ -59,4 +71,6 @@ public class CmdBuilder {
         cmd.setCmdValue(cmdList.toArray(array));
         return cmd;
     }
+
+
 }

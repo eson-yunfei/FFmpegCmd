@@ -3,9 +3,12 @@ package com.cloud.ffmpeg;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.cloud.ffmpeg.cmd.CmdBuilder;
+import com.cloud.ffmpeg.cmd.FFmepgCmd;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.os.Environment;
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -39,6 +42,28 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        String scrVideo = Environment.getExternalStorageDirectory()+"/test.h264";
+        String srcAudio = Environment.getExternalStorageDirectory()+"/test.aac";
+        String outVideo = Environment.getExternalStorageDirectory()+"/out.mp4";
+
+        FFmepgCmd.getInstance().exec(
+                new CmdBuilder().composed(scrVideo,srcAudio,outVideo)
+                        .build(),
+                new FFmepgCmd.OnCmdExecute() {
+                    @Override
+                    public void onExecute(int progress) {
+
+                    }
+                }
+        );
     }
 
     @Override

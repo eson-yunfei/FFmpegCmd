@@ -51,12 +51,19 @@ public class FFmepgCmd {
 
     public void exec(final Cmd cmd, OnCmdExecute onCmdExecute) {
 
-        CmdRunnable runnable = new CmdRunnable(onCmdExecute);
-        new Thread(runnable).start();
-        int ret = exec(cmd.getCmdLength(), cmd.getCmdValue());
-        if (ret == 0) {
-            runnable.setResult(ret);
-        }
+//        CmdRunnable runnable = new CmdRunnable(onCmdExecute);
+//        new Thread(runnable).start();
+//        int ret = exec(cmd.getCmdLength(), cmd.getCmdValue());
+//        if (ret == 0) {
+//            runnable.setResult(ret);
+//        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                exec(cmd.getCmdLength(), cmd.getCmdValue());
+            }
+        }).start();
 
     }
 
