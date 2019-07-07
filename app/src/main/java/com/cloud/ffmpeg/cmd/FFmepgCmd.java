@@ -42,6 +42,7 @@ public class FFmepgCmd {
 
     public native String stringFromJNI();
 
+    private native String readNativeVersion();
     //执行FFmpeg命令
     private native int exec(int cmdLen, String[] cmd);
 
@@ -57,6 +58,10 @@ public class FFmepgCmd {
             runnable.setResult(ret);
         }
 
+    }
+
+    public String readVersions() {
+        return readNativeVersion();
     }
 
 

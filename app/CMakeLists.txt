@@ -94,6 +94,7 @@ SET_TARGET_PROPERTIES(
 
 
 file(GLOB SOURCE src/main/cpp/*.cpp)
+file(GLOB SOURCE_UTIL src/main/cpp/utils/*.cpp)
 file(GLOB FFTOOL_SOURCE src/main/cpp/fftools/*.c)
 
 add_library(
@@ -101,7 +102,7 @@ add_library(
         SHARED
 
         ${SOURCE}
-
+        ${SOURCE_UTIL}
         ${FFTOOL_SOURCE})
 
 find_library(

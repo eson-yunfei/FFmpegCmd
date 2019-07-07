@@ -1,12 +1,18 @@
 #include <jni.h>
 #include <string>
+
 #include "LogUtil.h"
+#include "utils/VersionUtils.h"
 
 extern "C" {
 #include <libavcodec/jni.h>
 #include "fftools/ffmpeg.h"
+#include <libpostproc/postprocess.h>
 
 }
+
+static VersionUtils *versionUtils;
+
 extern "C"
 JNIEXPORT jstring JNICALL
 Java_com_cloud_ffmpeg_cmd_FFmepgCmd_stringFromJNI(JNIEnv *env, jobject /*instance*/) {
@@ -14,7 +20,6 @@ Java_com_cloud_ffmpeg_cmd_FFmepgCmd_stringFromJNI(JNIEnv *env, jobject /*instanc
     std::string hello = "Hello from C++";
 
     const char *versionName = av_version_info();
-
 
 
     return env->NewStringUTF(versionName);
@@ -56,7 +61,21 @@ extern "C"
 JNIEXPORT jint JNICALL
 Java_com_cloud_ffmpeg_cmd_FFmepgCmd_getProgress(JNIEnv *env, jobject instance) {
 
-
     return get_progress();
 
+}
+
+
+
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_cloud_ffmpeg_cmd_FFmepgCmd_readNativeVersion(JNIEnv *env, jobject instance) {
+
+    if (versionUtils == NULL) {
+        versionUtils = new VersionUtils();
+    }
+    std::string version_string = versionUtils->getAllVersion();
+
+    LOGE("version_string  : %s", version_string.c_str());
+    return env->NewStringUTF(version_string.c_str());
 }
